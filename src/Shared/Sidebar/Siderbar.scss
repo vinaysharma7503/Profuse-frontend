@@ -1,0 +1,24 @@
+.sidebar{
+    width: 15rem;
+    position: relative;
+
+  nav .navlink{
+        width: 85%;
+        text-decoration: none;
+        color: black;
+        margin-bottom: 20px;
+        padding: 5px;
+    }
+    .active{
+        color: white !important;
+        background-color:  #021B56!important;
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+    }
+
+    .footer{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+}
