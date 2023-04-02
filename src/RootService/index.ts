@@ -31,9 +31,13 @@ const { BASEURL = "" } = RootService(process.env.NODE_ENV?.trim());
 
 export const getReq =async (url:string) => {
     return axios.get(BASEURL + url)
-    .catch((e:any)=>console.log(e))
+    .catch((e:any)=>{console.log(e,'e h'); return e})
 }
 export const postReq =async (url:string,data:any) => {
-    return axios.get(BASEURL + url,data)
-    .catch((e:any)=>console.log(e))
+    return axios.post(BASEURL + url,data)
+    .catch((e:any)=>{console.log(e,'e h'); return e})
+}
+export const patchReq =async (url:string,data:any) => {
+    return axios.patch(BASEURL + url,data)
+    .catch((e:any)=>{console.log(e,'e h'); return e})
 }

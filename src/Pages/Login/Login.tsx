@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import toast,{ Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 type Props = {
@@ -8,12 +9,33 @@ type Props = {
 };
 
 const Login = (props: Props) => {
-  console.log('props',props);
-  
   const {userInfo} = props?.LoginReducer;
   const {isLoading,data=null,isAuth,error=null}= userInfo;
   const [cred={email:'',password:''},setCred] = useState<any>()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (data) {
+      if (data?.status==200) {
+        localStorage.setItem('token',data?.data?.token);
+        localStorage.setItem('auth',isAuth);
+        localStorage.setItem('name',data?.data?.user?.name);
+        localStorage.setItem('role',data?.data?.user?.role);
+        toast.success(data?.message)
+
+        setTimeout(() => {
+          navigate('/dashboard',{replace:true})
+        }, 1000);
+      }
+      else {
+       toast.error(data?.message);
+      }
+    }else if (error) {
+      toast.error(error?.response?.message);
+    }
+    
+  }, [!isLoading]);
+
   const onSubmit =  (event:any)=>{
     event.preventDefault();
     if (!cred?.email && !cred?.password) {
@@ -32,6 +54,7 @@ const Login = (props: Props) => {
   return (
     <>
       <Container>
+        <Toaster/>
         <Row>
           <Col md={12} className="p-4 d-flex flex-column">
             <span className="text-center mb-5">Login In to My Account</span>

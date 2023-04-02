@@ -1,41 +1,19 @@
-import Header from "@Shared/Header/Header";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row,Alert } from "react-bootstrap";
 import toast,{ Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { signupData } from "./Services/dashboardService";
 
-type Props = {
-  SignupReducer: any;
-  signupData: any;
-};
+type Props = {}
 
-const Signup = (props: Props) => {
-  const { userInfo } = props?.SignupReducer;
-  const { isLoading, data = null, isAuth, error = null } = userInfo;
-  const [cred = { name: "", email: "", password: "" }, setCred] =
+const DashboardAddUser = (props: Props) => {
+    const [cred = { name: "", email: "", password: "" }, setCred] =
     useState<any>();
+    const [isLoading, setIsLoading] = useState(false)
   const [confirmPassword, setConfirmPassword] = useState<any>();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(data,'data');
-    console.log(error,'error');
-    if (data) {
-      if (data?.status==201) {
-        toast.success(data?.message)
-        setTimeout(() => {
-          navigate('/',{replace:true})
-        }, 1000);
-      }
-      else {
-       toast.error(data?.message);
-      }
-    }else if (error) {
-      toast.error(error?.response?.message);
-    }
-    
-  }, [!isLoading]);
-
+  
   const onSubmit = (event: any) => {
     event.preventDefault();
     if (!cred?.name && !cred?.email && !cred?.password) {
@@ -51,17 +29,27 @@ const Signup = (props: Props) => {
     } else if (cred?.password !== confirmPassword) {
       toast.error("Password & Confirm Password does not match");
     } else {
-      props?.signupData(cred);
+      signupData(cred,signupDataCB);
     }
   };
+  const signupDataCB=(result:any)=>{
+        if (result?.status==201) {
+          toast.success(result?.message)
+          setTimeout(() => {
+            navigate('/dashboard',{replace:true})
+          }, 1000);
+        }
+        else {
+         toast.error(result?.message);
+        }
+
+  }
   return (
-    <>
-      <Header />
-      <Container>
+    <Container>
         <Toaster/>
         <Row>
           <Col md={12} className="p-4 d-flex flex-column">
-            <span className="text-center mb-5">Create New Account</span>
+            <span className="text-center mb-5">Add New Account</span>
             <Form className="m-auto" onSubmit={onSubmit}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Name</Form.Label>
@@ -109,18 +97,11 @@ const Signup = (props: Props) => {
                   Submit
                 </Button>
               </Form.Group>
-              <Link
-                to="/"
-                className="text-secondary text-decoration-none text-center"
-              >
-                Already have an account.
-              </Link>
             </Form>
           </Col>
         </Row>
       </Container>
-    </>
-  );
-};
+  )
+}
 
-export default Signup;
+export default DashboardAddUser

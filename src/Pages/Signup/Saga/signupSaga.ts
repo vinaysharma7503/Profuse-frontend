@@ -10,6 +10,8 @@ function* postApiData(payload:any){
         const result = yield call(SignupData,payload?.data);
         yield put(signupSuccessfully(result?.data))
     } catch (error) {
+        console.log(error,'check');
+        
         signupFailed(error)
     }
 }

@@ -8,6 +8,8 @@ export const SignupData = async (data:any)=>{
     try {
         return await postReq(SIGNUP,data)
     } catch (error:any) {
+        console.log('ce',error);
+        
         return error?.response
     }
 }
