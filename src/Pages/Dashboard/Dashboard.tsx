@@ -8,7 +8,7 @@ const Dashboard = (props: Props) => {
   return (
     <div className="d-flex vh-100 border">
       <Sidebar />
-      <div className="container-fluid vh-75">
+      <div className="container-fluid vh-75 overflow-auto">
           <Outlet />
         </div>
       </div>

@@ -1,14 +1,17 @@
 import Sidebar from '@Shared/Sidebar/Sidebar'
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
-import { getUserProfileData, updateUserProfileData } from './Services/profileService'
+import { addFundsData, getUserProfileData, updateUserProfileData, withdrawFundsData } from './Services/profileService'
 import toast, { Toaster } from 'react-hot-toast'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {}
 
 const UserProfile = (props: Props) => {
   const [userDetail, setUserDetail] = useState<any>()
+  const [accountBalance,setAccountBalance]= useState(0)
+  const [withdrawAccountBalance,setWithdrawAccountBalance]= useState(0)
+  const navigate = useNavigate()
   useEffect(() => {
     getUserProfileData(getUserProfileDataCB)
   }, [])
@@ -25,6 +28,43 @@ const UserProfile = (props: Props) => {
     if (result.status == 200) {
       toast.success(result?.data?.message)
       setUserDetail(result?.data?.data?.user)
+    }
+    else {
+      toast.error(result?.response?.message)
+    }
+  }
+
+  const addFunds = (event:any)=>{
+    event.preventDefault()
+    let data ={
+      account_balance:accountBalance
+    }
+    addFundsData(data,addFundsDataCB)
+  }
+  const addFundsDataCB = (result: any) => {
+    if (result.status == 200) {
+      toast.success(result?.data?.message)
+      setTimeout(() => {
+        navigate('/dashboard',{replace:true})
+      }, 1000);
+    }
+    else {
+      toast.error(result?.response?.message)
+    }
+  }
+  const withdrawFunds = (event:any)=>{
+    event.preventDefault()
+    let data ={
+      account_balance:withdrawAccountBalance
+    }
+    withdrawFundsData(data,withdrawFundsDataCB)
+  }
+  const withdrawFundsDataCB = (result: any) => {
+    if (result.status == 200) {
+      toast.success(result?.data?.message)
+      setTimeout(() => {
+        navigate('/dashboard',{replace:true})
+      }, 1000);
     }
     else {
       toast.error(result?.response?.message)
@@ -69,22 +109,22 @@ const UserProfile = (props: Props) => {
           </Col>
           <Col className='p-2'>
             <h3 className='text-center'>Add Funds</h3>
-            <Form>
+            <Form onSubmit={addFunds}>
               <Form.Group className="mb-3" controlId="formBasicAmount">
                 <Form.Label>Deposit Amount</Form.Label>
-                <Form.Control type="text" placeholder="Enter amount" />
+                <Form.Control type="text" placeholder="Enter amount" onChange={(a:any)=>setAccountBalance(a.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" >
-                <Button className='m-2'>Save</Button>
+                <Button className='m-2' type='submit'>Save</Button>
               </Form.Group>
             </Form>
-            <Form>
+            <Form onSubmit={withdrawFunds}>
               <Form.Group className="mb-3" controlId="formBasicAmount">
                 <Form.Label>Withdraw Amount</Form.Label>
-                <Form.Control type="text" placeholder="Enter amount" />
+                <Form.Control type="text" placeholder="Enter amount" onChange={(w:any)=>setWithdrawAccountBalance(w.target.value)} />
               </Form.Group>
               <Form.Group className="mb-3" >
-                <Button className='m-2'>Save</Button>
+                <Button className='m-2' type='submit'>Save</Button>
               </Form.Group>
             </Form>
           </Col>
