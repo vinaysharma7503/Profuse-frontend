@@ -11,4 +11,5 @@ export default {
     DELETEPRODUCT:'/admin/product/delete-product',
     INVESTAMOUNT:'/web/account/invest-amount',
     TRANSACTIONSLIST: '/web/account/get-transactions',
+    DELETEINVESTPRODUCT:'/web/account/delete-invest',
 }

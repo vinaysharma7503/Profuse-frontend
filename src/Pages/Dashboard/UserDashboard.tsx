@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import "./Dashboard.scss";
 import Chart from 'react-apexcharts'
-import { getProductListData, getTransactionsListData, getUserDashboardData, investAmountData } from "./Services/dashboardService";
+import { deleteTrProductData, deleteTransactionData, getProductListData, getTransactionsListData, getUserDashboardData, investAmountData } from "./Services/dashboardService";
 import { Link } from "react-router-dom";
 import toast,{ Toaster } from "react-hot-toast";
 
@@ -78,7 +78,7 @@ const UserDashboard = (props: Props) => {
       {/* <td>{data?.product_offering1},{data?.product_offering2},{data?.product_offering3}</td> */}
       <td>{data?.amount}</td>
       {/* <td>{data?.category_id?.category_description}</td> */}
-      <td><Link to='' className="text-decoration-none">Cancel</Link></td>
+      <td><Link to='' className="text-decoration-none" onClick={()=>onDeleteInvest(data?._id)}>Cancel</Link></td>
     </tr>
   }
 
@@ -102,6 +102,24 @@ const UserDashboard = (props: Props) => {
     } else {
       toast.error(result?.response?.data?.message)
       setShow(false)
+    }
+  }
+
+  const onDeleteInvest = (id:any)=>{
+    let data = {
+      _id: id
+    }
+    deleteTrProductData(data,deleteTransactionDataCB)
+  }
+
+  const deleteTransactionDataCB = (result:any)=>{
+    if (result?.status==200) {
+      toast.success(result?.data?.message)
+      getUserDashboardData(getUserDashboardDataCB)
+    getProductListData(page, productsListDataCB)
+    getTransactionsListData(page, transactionsListDataCB)
+    } else {
+      toast.error(result?.response?.data?.message)
     }
   }
 
