@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap";
 import "./Dashboard.scss";
 import Chart from 'react-apexcharts'
-import { deleteTrProductData, deleteTransactionData, getProductListData, getTransactionsListData, getUserDashboardData, investAmountData } from "./Services/dashboardService";
+import { deleteTrProductData, getProductListData, getTransactionsListData, getUserDashboardData, investAmountData } from "./Services/dashboardService";
 import { Link } from "react-router-dom";
 import toast,{ Toaster } from "react-hot-toast";
 

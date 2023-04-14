@@ -41,9 +41,7 @@ export const patchReq =async (url:string,data:any) => {
     return axios.patch(BASEURL + url,data)
     .catch((e:any)=>{console.log(e,'e h'); return e})
 }
-export const deleteReq =async (url:string,data:any) => {
-  console.log('ddd',data);
-  
-    return axios.delete(BASEURL + url,data)
+export const deleteReq =async (url:string) => {
+    return axios.delete(BASEURL + url)
     .catch((e:any)=>{console.log(e,'e h'); return e})
 }

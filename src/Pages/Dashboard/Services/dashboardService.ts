@@ -45,7 +45,8 @@ export const changeUserStatusData = async (data: any, cb: any) => {
 }
 export const deleteUserData = async (data: any, cb: any) => {
     try {
-        const result = await deleteReq(DELETEUSER, data)
+        let url = `${DELETEUSER}?id=${data?._id}`
+        const result = await deleteReq(url)
         return cb(result)
     } catch (error: any) {
         return cb(error?.response)
@@ -98,7 +99,8 @@ export const categoryData = async (data: any, cb: any) => {
 
 export const deleteProductData = async (data: any, cb: any) => {
     try {
-        const result = await deleteReq(DELETEPRODUCT, data)
+        let url = `${DELETEPRODUCT}?id=${data?._id}`
+        const result = await deleteReq(url)
         return cb(result)
     } catch (error: any) {
         return cb(error?.response)
@@ -127,21 +129,10 @@ export const getTransactionsListData = async (page: any, cb: any) => {
     }
 }
 
-export const deleteTransactionData = async (data: any, cb: any) => {
-    try {
-        console.log(data, 'dat');
-
-        const result = await deleteReq(DELETEINVESTPRODUCT, data)
-        return cb(result)
-    } catch (error: any) {
-        return cb(error?.response)
-    }
-}
-
 export const deleteTrProductData = async (data: any, cb: any) => {
     try {
         let url = `${DELETEINVESTPRODUCT}?id=${data?._id}`
-        const result = await deleteReq(url, data)
+        const result = await deleteReq(url)
         return cb(result)
     } catch (error: any) {
         return cb(error?.response)
